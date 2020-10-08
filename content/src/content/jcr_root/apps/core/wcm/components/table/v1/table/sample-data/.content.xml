@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    jcr:primaryType="nt:unstructured">
+    <row-1
+        jcr:primaryType="nt:unstructured"
+        jcr:title="Active"
+        email="sample1@sample.com"
+        firstName="sample-1"
+        gender="male"/>
+    <row-2
+        jcr:primaryType="nt:unstructured"
+        jcr:title="Active"
+        email="sample2@sample.com"
+        firstName="sample-2"
+        gender="female"/>
+    <row-3
+        jcr:primaryType="nt:unstructured"
+        jcr:title="Inactive"
+        email="sample3@sample.com"
+        firstName="sample-3"
+        gender="male"/>
+</jcr:root>
