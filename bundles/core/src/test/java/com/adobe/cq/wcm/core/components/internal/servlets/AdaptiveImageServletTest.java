@@ -681,11 +681,70 @@ class AdaptiveImageServletTest extends AbstractImageTest {
 
     @Test
     void testHorizontalAndVerticalFlipWithImageFile() throws IOException {
-        Pair<MockSlingHttpServletRequest, MockSlingHttpServletResponse> requestResponsePair =
-                prepareRequestResponsePair(IMAGE23_PATH, 1494867377756L, "img.2000", "png");
-        testHorizontalAndVerticalFlip(requestResponsePair);
+            Pair<MockSlingHttpServletRequest, MockSlingHttpServletResponse> requestResponsePair = prepareRequestResponsePair(
+                            IMAGE23_PATH, 1494867377756L, "img.2000", "png");
+            testHorizontalAndVerticalFlip(requestResponsePair);
 
     }
+    
+    @Test
+    void testDAMAssetDirectlyPNG() throws Exception {
+            Pair<MockSlingHttpServletRequest, MockSlingHttpServletResponse> requestResponsePair = prepareRequestResponsePair(
+                            PNG_ASSET_PATH, "img.85.1280", "png");
+            MockSlingHttpServletRequest request = requestResponsePair.getLeft();
+            MockSlingHttpServletResponse response = requestResponsePair.getRight();
+            servlet.doGet(request, response);
+            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(response.getOutput());
+            BufferedImage image = ImageIO.read(byteArrayInputStream);
+            Dimension expectedDimension = new Dimension(1280, 1280);
+            Dimension actualDimension = new Dimension(image.getWidth(), image.getHeight());
+            Assertions.assertEquals(expectedDimension, actualDimension, "Expected image rendered at requested size.");
+            Assertions.assertEquals("image/png", response.getContentType(), "Expected a PNG image.");
+    }
+
+    @Test
+    void testDAMAssetDirectlySVG() throws Exception {
+        Pair<MockSlingHttpServletRequest, MockSlingHttpServletResponse> requestResponsePair = prepareRequestResponsePair(
+                SVG_ASSET_PATH, "img", "svg");
+        MockSlingHttpServletRequest request = requestResponsePair.getLeft();
+        MockSlingHttpServletResponse response = requestResponsePair.getRight();
+        servlet.doGet(request, response);
+        ByteArrayInputStream stream = new ByteArrayInputStream(response.getOutput());
+        InputStream directStream = this.getClass().getClassLoader()
+                .getResourceAsStream("image/Adobe_Systems_logo_and_wordmark.svg");
+        Assertions.assertTrue(IOUtils.contentEquals(stream, directStream));
+    }
+    
+    @Test
+    void testDAMAssetDirectlyWithIncorrectLastModifiedSuffix() throws Exception {
+        Pair<MockSlingHttpServletRequest, MockSlingHttpServletResponse> requestResponsePair = prepareRequestResponsePair(
+                PNG_ASSET_PATH, "coreimg.800", "png");
+        MockSlingHttpServletRequest request = requestResponsePair.getLeft();
+        MockRequestPathInfo requestPathInfo = (MockRequestPathInfo) request.getRequestPathInfo();
+        requestPathInfo.setSuffix("/42.png");
+        MockSlingHttpServletResponse response = requestResponsePair.getRight();
+        servlet.doGet(request, response);
+        Assertions.assertEquals(302, response.getStatus(), "Expected a 302 response code.");
+        Assertions.assertEquals(
+                CONTEXT_PATH + "/content/dam/core/images/Adobe_Systems_logo_and_wordmark.png.coreimg.800.png/1490005239000/Adobe_Systems_logo_and_wordmark.png",
+                response.getHeader("Location"), "Expected redirect location with correct last modified suffix");
+    }
+
+    @Test
+    void testDAMAssetDirectlyWithMissingLastModifiedSuffix() throws Exception {
+        Pair<MockSlingHttpServletRequest, MockSlingHttpServletResponse> requestResponsePair = prepareRequestResponsePair(
+                PNG_ASSET_PATH, "coreimg.800", "png");
+        MockSlingHttpServletRequest request = requestResponsePair.getLeft();
+        MockSlingHttpServletResponse response = requestResponsePair.getRight();
+        MockRequestPathInfo requestPathInfo = (MockRequestPathInfo) request.getRequestPathInfo();
+        requestPathInfo.setSuffix("");
+        servlet.doGet(request, response);
+        Assertions.assertEquals(302, response.getStatus(), "Expected a 302 response code.");
+        Assertions.assertEquals(
+                CONTEXT_PATH + "/content/dam/core/images/Adobe_Systems_logo_and_wordmark.png.coreimg.800.png/1490005239000/Adobe_Systems_logo_and_wordmark.png",
+                response.getHeader("Location"), "Expected redirect location with correct last modified suffix");
+    }
+
 
     @Test
     void testImageTooLarge() throws Exception {

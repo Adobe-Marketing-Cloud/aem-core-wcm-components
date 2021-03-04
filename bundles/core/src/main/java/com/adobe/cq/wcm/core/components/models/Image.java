@@ -164,6 +164,13 @@ public interface Image extends Component {
     String PN_MAP = "imageMap";
 
     /**
+     * Name of the resource property that will indicate if the DAM assets are loaded directly.
+     *
+     * @since com.adobe.cq.wcm.core.components.models 12.16.0
+     */
+    String PN_DIRECT_DAM_SRC = "directLoadFromDAM";
+  
+    /**
      * Name of the configuration policy property that controls whether Dynamic Media features are used by Core component.
      */
     String PN_DESIGN_DYNAMIC_MEDIA_ENABLED = "enableDmFeatures";

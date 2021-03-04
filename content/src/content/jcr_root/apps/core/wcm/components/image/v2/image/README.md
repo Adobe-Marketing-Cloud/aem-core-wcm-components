@@ -40,6 +40,8 @@ device) is disabled.
 4. `./lazyThreshold` - defines the number of pixel an image is getting loaded before it gets visible and lazy loading is enabled. 
 Default is set to 0.
 5.  `./enableDmFeatures` - if `true`, Dynamic Media features are enabled.
+6. `./directLoadFromDAM` - defines if DAM assets are addressed directly using the DAM asset URL
+
 
 ### Edit Dialog Properties
 The following properties are written to JCR for this Image component and are expected to be available as `Resource` properties:
@@ -92,6 +94,16 @@ Author:
 
 Publish:
 <dm_publish_server>/is/image/<company>/<assetId>?qlt=<quality>&wid=<width>&ts=<timestamp>&$<image_preset>$&<image_modifiers>
+```
+
+For DAM assets and with the policy option `./directLoadFromDAM` set to `true` the image URLs have the following pattern used by the `com.adobe.cq.wcm.core.components.internal.servlets.AdaptiveImageServlet` has the following format:
+
+```
+Author:
+/content/dam/<project_path>/<asset_path>/<asset_name>.coreimg.<quality>.<width>.<extension>/<timestamp>/<asset_name>.<extension>
+
+Publish:
+/content/dam/<project_path>/<asset_path>/<asset_name>.coreimg.<quality>.<width>.<extension>/<timestamp>/<asset_name>.<extension>
 ```
 
 ## Client Libraries
