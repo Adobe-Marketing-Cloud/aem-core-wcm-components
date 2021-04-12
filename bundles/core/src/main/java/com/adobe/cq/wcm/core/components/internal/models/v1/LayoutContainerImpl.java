@@ -24,8 +24,11 @@ import javax.annotation.PostConstruct;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.models.annotations.Model;
+import org.apache.sling.models.annotations.injectorspecific.InjectionStrategy;
 import org.apache.sling.models.annotations.injectorspecific.ScriptVariable;
+import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.adobe.cq.wcm.core.components.models.LayoutContainer;
 
@@ -52,6 +55,13 @@ public class LayoutContainerImpl extends AbstractContainerImpl implements Layout
     private LayoutType layout;
 
     /**
+     * The accessibility label.
+     */
+    @ValueMapValue(injectionStrategy = InjectionStrategy.OPTIONAL)
+    @Nullable
+    private String accessibilityLabel;
+
+    /**
      * Initialize the model.
      */
     @PostConstruct
@@ -71,7 +81,7 @@ public class LayoutContainerImpl extends AbstractContainerImpl implements Layout
     @NotNull
     protected List<ResourceListItemImpl> readItems() {
         return getChildren().stream()
-            .map(res -> new ResourceListItemImpl(res, getId(), component))
+            .map(res -> new ResourceListItemImpl(linkHandler, res, getId(), component))
             .collect(Collectors.toList());
     }
 
@@ -83,5 +93,11 @@ public class LayoutContainerImpl extends AbstractContainerImpl implements Layout
     @Override
     public @NotNull LayoutType getLayout() {
         return layout;
+    }
+
+    @Override
+    @Nullable
+    public String getAccessibilityLabel() {
+        return accessibilityLabel;
     }
 }

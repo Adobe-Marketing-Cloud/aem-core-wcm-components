@@ -69,6 +69,16 @@ public interface LayoutContainer extends Container {
      */
     @NotNull
     default LayoutType getLayout() {
-        throw new UnsupportedOperationException();
+        return LayoutType.SIMPLE;
+    }
+
+    /**
+     * Returns an accessibility label that describes the container.
+     *
+     * @return an accessibility label for the container
+     * @since com.adobe.cq.wcm.core.components.models 12.20.0
+     */
+    default String getAccessibilityLabel() {
+        return null;
     }
 }
