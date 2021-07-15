@@ -69,6 +69,7 @@
                         <_metatypeannotations>*</_metatypeannotations>
                         <Import-Package>
                             com.adobe.cq.commerce.*;resolution:=optional,
+                            com.adobe.aem.wcm.seo.*;resolution:=optional,
                             javax.annotation;version=0.0.0,
                             com.day.cq.dam.api;version="[1.24,2.0)",
                             *
@@ -382,6 +383,10 @@
             <artifactId>org.apache.sling.commons.johnzon</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.apache.sling</groupId>
+            <artifactId>org.apache.sling.servlet-helpers</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
         </dependency>
@@ -413,6 +418,12 @@
             <artifactId>httpclient-osgi</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.adobe.cq.wcm</groupId>
+            <artifactId>com.adobe.aem.wcm.seo</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
         <!-- Testing dependencies -->
         <dependency>
             <groupId>${project.groupId}</groupId>
@@ -441,10 +452,6 @@
         <dependency>
             <groupId>io.wcm</groupId>
             <artifactId>io.wcm.testing.aem-mock.junit5</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.sling</groupId>
-            <artifactId>org.apache.sling.servlet-helpers</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.sling</groupId>
@@ -539,6 +546,12 @@
             <groupId>org.apache.sling</groupId>
             <artifactId>org.apache.sling.testing.hamcrest</artifactId>
             <version>1.0.2</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.sling</groupId>
+            <artifactId>org.apache.sling.sitemap</artifactId>
             <scope>test</scope>
         </dependency>
 
